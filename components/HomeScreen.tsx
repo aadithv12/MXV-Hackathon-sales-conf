@@ -7,6 +7,7 @@ import { supabase } from '../services/supabase';
 import { Session } from '../types';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, FilmIcon, QuestionMarkCircleIcon, StarIcon, LoadingSpinner, DownloadIcon, Share2Icon } from './icons';
 import PosterGenerator from './PosterGenerator';
+import Chatbot from './Chatbot';
 
 // --- TILE WRAPPER ---
 const TileWrapper: React.FC<{ children: ReactNode; className?: string }> = ({ children, className = '' }) => (
@@ -213,14 +214,14 @@ const NextSessionTile: React.FC<{ session: Session | null; countdown: string; pr
           ) : (
             <div className="space-y-3">
               <p className="text-sm text-[#FFF5E6]/80">Starts in: <span className="font-bold text-lg">{countdown}</span></p>
-              <h4 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-white truncate" title={session.name}>{session.name}</h4>
+              <h4 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-white leading-tight break-words" title={session.name}>{session.name}</h4>
               {session.speaker && (
-                <div className="flex items-center space-x-2">
-                    <div className="w-6 h-6 rounded-full bg-white/20 flex-shrink-0"></div>
-                    <p className="font-semibold text-[#FFD700] truncate" title={session.speaker}>{session.speaker}</p>
+                <div className="flex items-start space-x-2">
+                    <div className="w-6 h-6 rounded-full bg-white/20 flex-shrink-0 mt-0.5"></div>
+                    <p className="font-semibold text-[#FFD700] leading-tight break-words" title={session.speaker}>{session.speaker}</p>
                 </div>
               )}
-              <p className="text-sm text-[#FFF5E6]/90 h-12 overflow-hidden">{session.description}</p>
+              <p className="text-sm text-[#FFF5E6]/90 leading-tight">{session.description}</p>
               <p className="text-xs text-[#FFF5E6]/70">{session.durationMinutes} min session</p>
             </div>
           )}
@@ -237,12 +238,15 @@ const NextSessionTile: React.FC<{ session: Session | null; countdown: string; pr
 };
 
 // --- FAQ TILE ---
-const FaqTile: React.FC = () => (
+const FaqTile: React.FC<{ onChatbotOpen: () => void }> = ({ onChatbotOpen }) => (
   <TileWrapper className="flex flex-col items-center justify-center text-center bg-gradient-to-br from-[#B91C3C] to-[#5D1E3F]">
     <QuestionMarkCircleIcon className="w-16 h-16 text-[#FF9933] mb-4"/>
     <h3 className="text-2xl font-bold">FAQs</h3>
     <p className="text-[#FFD700] mt-2">Got questions? Get instant answers.</p>
-    <button className="mt-4 bg-[#FF9933] text-[#2C1E3A] px-4 py-2 rounded-lg font-semibold hover:bg-[#CC5500] transition-colors">
+    <button
+      onClick={onChatbotOpen}
+      className="mt-4 bg-[#FF9933] text-[#2C1E3A] px-4 py-2 rounded-lg font-semibold hover:bg-[#CC5500] transition-colors"
+    >
       Ask Away
     </button>
   </TileWrapper>
@@ -446,6 +450,7 @@ const RatingTile: React.FC<{ session: Session | null, timeRemaining: string, con
 const HomeScreen: React.FC = () => {
   const { user } = useUser();
   const [showPosterGenerator, setShowPosterGenerator] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
   
   const eventStartTime = useMemo(() => {
       // Simplified: Rely on event_start_time being present.
@@ -463,13 +468,16 @@ const HomeScreen: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <CarouselTile />
         <NextSessionTile session={displayNextSession} countdown={countdownToNext} progress={progress} conferenceState={conferenceState} />
-        <FaqTile />
+        <FaqTile onChatbotOpen={() => setShowChatbot(true)} />
         <PosterTile onPosterClick={() => setShowPosterGenerator(true)} />
         <RatingTile session={currentSession} timeRemaining={timeRemainingInCurrent} conferenceState={conferenceState} />
       </div>
       <AnimatePresence>
         {showPosterGenerator && (
             <PosterGenerator onClose={() => setShowPosterGenerator(false)} />
+        )}
+        {showChatbot && (
+            <Chatbot onClose={() => setShowChatbot(false)} />
         )}
       </AnimatePresence>
     </>

@@ -223,12 +223,40 @@ const PosterGenerator: React.FC<PosterGeneratorProps> = ({ onClose }) => {
   const actionButtonClass = "flex items-center justify-center space-x-2 w-full px-4 py-3 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-    >
+    <>
+      <style jsx>{`
+        .shimmer-effect {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .shimmer-overlay {
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 215, 0, 0.4) 25%,
+            rgba(255, 215, 0, 0.6) 50%,
+            rgba(255, 215, 0, 0.4) 75%,
+            transparent 100%
+          );
+          animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(200%);
+          }
+        }
+      `}</style>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      >
       <motion.div
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
@@ -343,7 +371,8 @@ const PosterGenerator: React.FC<PosterGeneratorProps> = ({ onClose }) => {
           </AnimatePresence>
         </div>
       </motion.div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 

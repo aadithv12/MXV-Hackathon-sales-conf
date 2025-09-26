@@ -22,6 +22,6 @@ export const SESSIONS: Session[] = [
     { name: 'Tea Break', speaker: '', description: 'Networking and refreshments.', durationMinutes: 1 },
     { name: 'Panel: Customer-Centric Sales Strategies', speaker: 'Arjun Mehta, Sneha Patel, Vikram Singh, Anjali Desai', description: 'Industry leaders discuss building lasting customer relationships.', durationMinutes: 2 },
     { name: 'Lunch', speaker: '', description: 'Enjoy a delicious meal.', durationMinutes: 2 },
-    { name: 'Session: Data-Driven Prospecting', speaker: 'Karthik Subramanian', description: 'Leverage analytics to identify and convert high-value prospects.', durationMinutes: 1 },
-    { name: 'Closing: Celebrating Success', speaker: 'Meera Iyer', description: 'Recognize top performers and share inspiring success stories.', durationMinutes: 1 },
+    { name: 'Session: Data-Driven Prospecting and Pipeline Building', speaker: 'Karthik Subramanian', description: 'Leverage analytics to identify and convert high-value prospects.', durationMinutes: 1 },
+    { name: 'Closing Session: Celebrating Success and Growth Stories', speaker: 'Meera Iyer', description: 'Recognize top performers and share inspiring success stories.', durationMinutes: 1 },
 ];

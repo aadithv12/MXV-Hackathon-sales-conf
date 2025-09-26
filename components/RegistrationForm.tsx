@@ -67,6 +67,41 @@ const RegistrationForm: React.FC = () => {
 
       // If a user is found, log them in by setting user context
       if (existingUser) {
+        // Send existing user login data to webhook
+        try {
+          const webhookPayload = {
+            id: existingUser.id,
+            name: existingUser.name,
+            email: existingUser.email,
+            phone: existingUser.phone,
+            branch_region: existingUser.branch_region,
+            tshirt_size: existingUser.tshirt_size,
+            dietary_preference: existingUser.dietary_preference,
+            registered_at: existingUser.registered_at,
+            event_start_time: existingUser.event_start_time || null,
+            timestamp: new Date().toISOString(),
+            event_type: "user_login",
+            conference: "Shree Cauvery Refreshments Sales Conference 2025"
+          };
+
+          const webhookResponse = await fetch('https://avssssss.app.n8n.cloud/webhook-test/7029827c-6331-4225-ab05-abe55a601e4c', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(webhookPayload)
+          });
+
+          if (!webhookResponse.ok) {
+            console.warn('Webhook call failed:', webhookResponse.status, webhookResponse.statusText);
+          } else {
+            console.log('Login data sent to webhook successfully');
+          }
+        } catch (webhookError) {
+          console.warn('Webhook call error:', webhookError);
+          // Don't fail the login if webhook fails
+        }
+
         setUser(existingUser as Registration);
         setIsLoading(false);
         return;
@@ -106,6 +141,41 @@ const RegistrationForm: React.FC = () => {
       }
 
       if (data) {
+        // Send registration data to webhook
+        try {
+          const webhookPayload = {
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            branch_region: data.branch_region,
+            tshirt_size: data.tshirt_size,
+            dietary_preference: data.dietary_preference,
+            registered_at: data.registered_at,
+            event_start_time: data.event_start_time || null,
+            timestamp: new Date().toISOString(),
+            event_type: "user_registration",
+            conference: "Shree Cauvery Refreshments Sales Conference 2025"
+          };
+
+          const webhookResponse = await fetch('https://avssssss.app.n8n.cloud/webhook-test/7029827c-6331-4225-ab05-abe55a601e4c', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(webhookPayload)
+          });
+
+          if (!webhookResponse.ok) {
+            console.warn('Webhook call failed:', webhookResponse.status, webhookResponse.statusText);
+          } else {
+            console.log('Registration data sent to webhook successfully');
+          }
+        } catch (webhookError) {
+          console.warn('Webhook call error:', webhookError);
+          // Don't fail the registration if webhook fails
+        }
+
         setUser(data as Registration);
       }
     } catch (error) {
