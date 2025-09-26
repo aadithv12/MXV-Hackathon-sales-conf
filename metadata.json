@@ -1,0 +1,5 @@
+{
+  "name": "Sales Conference Registration",
+  "description": "A modern, professional registration form for a sales conference, integrated with Supabase for data persistence and featuring a clean, responsive UI built with React and Tailwind CSS.",
+  "requestFramePermissions": []
+}
