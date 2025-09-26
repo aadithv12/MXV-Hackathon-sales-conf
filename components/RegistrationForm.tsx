@@ -10,8 +10,8 @@ const initialFormData: RegistrationFormData = {
   email: '',
   phone: '',
   branch_region: BRANCH_REGIONS[0],
-  tshirt_size: TShirtSize.M,
-  dietary_preference: DietaryPreference.NON_VEGETARIAN,
+  tshirt_size: 'M' as TShirtSize,
+  dietary_preference: 'Non-Vegetarian' as DietaryPreference,
 };
 
 const RegistrationForm: React.FC = () => {
