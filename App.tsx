@@ -45,8 +45,8 @@ const App: React.FC = () => {
       )}
       
       <header className="mb-8 text-center relative z-10">
-        <h1 className="text-4xl font-bold text-[#FFF5E6] tracking-tight font-serif">Shree Cauvery Refreshments</h1>
-        <p className="text-lg text-[#FFD700] mt-2">Sales Conference 2025</p>
+        <h1 className="text-4xl font-bold text-[#B91C3C] tracking-tight font-serif">Shree Cauvery Refreshments</h1>
+        <p className="text-lg text-[#DC2626] mt-2">Sales Conference 2025</p>
       </header>
       
       <main className="w-full max-w-6xl transition-all duration-500 relative z-10">

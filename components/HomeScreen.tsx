@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
 import { usePoster } from '../context/PosterContext';
-import { SESSIONS } from '../constants';
+import { SESSIONS, FEEDBACK_WEBHOOK_URL } from '../constants';
 import { supabase } from '../services/supabase';
 import { Session } from '../types';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, FilmIcon, QuestionMarkCircleIcon, StarIcon, LoadingSpinner, DownloadIcon, Share2Icon } from './icons';
@@ -364,18 +364,62 @@ const RatingTile: React.FC<{ session: Session | null, timeRemaining: string, con
   const handleSubmit = async () => {
     if (!rating || !session || !user) return;
     setLoading(true);
-    const { error } = await supabase.from('session_feedback').insert({
-      registration_id: user.id,
-      session_name: session.name,
-      rating: rating,
-      feedback: feedback
-    });
-    setLoading(false);
-    if (!error) {
+
+    try {
+      // Submit to Supabase first
+      const { error } = await supabase.from('session_feedback').insert({
+        registration_id: user.id,
+        session_name: session.name,
+        rating: rating,
+        feedback: feedback
+      });
+
+      if (error) {
+        console.error("Feedback submission error:", error);
+        setLoading(false);
+        return;
+      }
+
+      // If Supabase submission successful, send to webhook
+      const webhookPayload = {
+        email: user.email,
+        session_name: session.name,
+        rating: rating,
+        feedback: feedback || '',
+        timestamp: new Date().toISOString(),
+        user_name: user.name,
+        user_phone: user.phone,
+        branch_region: user.branch_region,
+        conference: "Shree Cauvery Refreshments Sales Conference 2025"
+      };
+
+      try {
+        const webhookResponse = await fetch(FEEDBACK_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(webhookPayload)
+        });
+
+        if (!webhookResponse.ok) {
+          console.warn('Webhook submission failed:', await webhookResponse.text());
+        } else {
+          console.log('Feedback successfully sent to webhook');
+        }
+      } catch (webhookError) {
+        console.warn('Webhook submission error:', webhookError);
+        // Don't fail the entire submission if webhook fails
+      }
+
+      // Mark as successful regardless of webhook status
       setSubmitted(true);
       setSessionRated(session.name);
-    } else {
+
+    } catch (error) {
       console.error("Feedback submission error:", error);
+    } finally {
+      setLoading(false);
     }
   };
   
