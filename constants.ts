@@ -5,6 +5,9 @@ import { DietaryPreference, TShirtSize, Session } from './types';
 export const SUPABASE_URL = 'https://yfupozhxjyyuomjqynah.supabase.co';
 export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmdXBvemh4anl5dW9tanF5bmFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4NjI1MDgsImV4cCI6MjA3NDQzODUwOH0.2krGJW6zXfliuXzoIcQmOCq4ZPF2D60KBjuSN7Q8xcc';
 
+// Webhook URL for feedback submissions
+export const FEEDBACK_WEBHOOK_URL = 'https://avssssss.app.n8n.cloud/webhook-test/74a520f2-2f36-487c-b1c9-87de6abd2281';
+
 export const BRANCH_REGIONS = [
   'Bangalore',
   'Mysore',
@@ -26,8 +29,8 @@ export const BRANCH_REGIONS = [
 
 ];
 
-export const TSHIRT_SIZES = Object.values(TShirtSize);
-export const DIETARY_PREFERENCES = Object.values(DietaryPreference);
+export const TSHIRT_SIZES: TShirtSize[] = [TShirtSize.S, TShirtSize.M, TShirtSize.L, TShirtSize.XL, TShirtSize.XXL];
+export const DIETARY_PREFERENCES: DietaryPreference[] = [DietaryPreference.Vegetarian, DietaryPreference.NonVegetarian, DietaryPreference.Vegan, DietaryPreference.Jain];
 
 export const SESSIONS: Session[] = [
     { name: 'Keynote: Winning the Market in 2025', speaker: 'Rajesh Krishnamurthy', description: 'Transform your sales approach with cutting-edge strategies for the Indian market.', durationMinutes: 5 },
